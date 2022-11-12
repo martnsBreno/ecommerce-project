@@ -1,6 +1,13 @@
 package com.githubmartnsbreno.ecommerce.config;
 
+import java.util.ArrayList;
+import java.util.Set;
+
+import javax.persistence.EntityManager;
+import javax.persistence.metamodel.EntityType;
+
 import org.hibernate.boot.Metadata;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.core.mapping.HttpMethods;
@@ -14,6 +21,12 @@ import com.githubmartnsbreno.ecommerce.entity.ProductCategory;
 @Configuration
 public class DataRestConfig implements RepositoryRestConfigurer {
 
+    private EntityManager entityManager;
+
+    @Autowired
+    public void MyDataRestConfig(EntityManager theEntityManager) {
+        entityManager = theEntityManager;
+    }
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         HttpMethod[] theUnsupporHttpMethods = {HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE};
@@ -29,6 +42,22 @@ public class DataRestConfig implements RepositoryRestConfigurer {
         .forDomainType(ProductCategory.class)
         .withItemExposure((Metadata, HttpMethods) -> HttpMethods.disable(theUnsupporHttpMethods))
         .withCollectionExposure((Metadata, HttpMethods) -> HttpMethods.disable(theUnsupporHttpMethods));
+   
+        //chamando metodo interno
+        exposeIds(config);
+    }
+
+    private void exposeIds(RepositoryRestConfiguration config) {
+        Set<EntityType<?>> entities = entityManager.getMetamodel().getEntities();
+
+        ArrayList<Object> entityArray = new ArrayList<>();
+
+        for (EntityType tempEntity : entities) {
+            entityArray.add(tempEntity.getJavaType());
+        }
+
+        Class[] domainTypes = entityArray.toArray(new Class[0]);
+        config.exposeIdsFor(domainTypes);
     }
     
 }
