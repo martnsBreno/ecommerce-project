@@ -51,9 +51,14 @@
                             <p>Quantidade de items: {{ totalQuantity}}</p>
                             <p>Frete Grátis</p>
                             <p>Total a pagar: {{ totalPrice | currency: 'BRL'}}</p>
+                            <a routerLink="/checkout" style="background: #0d6efd;
+                                                            color: #fff;
+                                                            text-decoration: none;
+                                                            border-radius: 5px;
+                                                            margin-bottom: 5px;
+                                                            margin-left: 8px;">Finalizar</a>
                         </td>
                     </tr>
-                    <a routerLink="/checkout" class="btn btn-primary">Finalizar</a>
                 </table>
             </div>
             <div *ngIf="cartItems.length ==0" class="alert alert-warning" role="alert">

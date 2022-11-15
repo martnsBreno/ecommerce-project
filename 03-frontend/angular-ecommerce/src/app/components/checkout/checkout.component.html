@@ -1,4 +1,162 @@
-<div class="main-content">
-    <p>checkout works!</p>
+<div class="main-content page-m">
+    <div class="section-content section-content-p30">
+        <div class="container-fluid">
+
+            <form [formGroup]="checkoutFormGroup" (ngSubmit)="onSubmit()">
+                <!--customer form-->
+                <div formGroupName="customer" class="form-area">
+                    <h3>Cliente</h3>
+                    <div class="row">
+                        <div class="col-md-2"> <label>Primeiro Nome</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="firstName" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"> <label>Ultimo Nome</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="lastName" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"> <label>Email</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="email" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--shipping adress-->
+                <div formGroupName="shippingAdress" class="form-area">
+                    <h3>Endereco</h3>
+                    <div class="row">
+                        <div class="col-md-2"> <label>Rua</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="street" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"> <label>Cidade</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="city" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"> <label>Estado</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <select formControlName="state">
+                                    <option>A FAZER</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"> <label>Pais</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <select formControlName="country">
+                                    <option>A FAZER</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"> <label>CEP</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="zipCode" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--credit card-->
+                
+                <div formGroupName="creditCard" class="form-area">
+                    <h3>Cliente</h3>
+                    <div class="row">
+                        <div class="col-md-2"> <label>Credito/Debito</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <select formControlName="cardType">
+                                    <option>Credito</option>
+                                    <option>Debito</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"> <label>Nome no Cartao</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="nameOnCard" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"> <label>Numero do Cartao</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="cardNumber" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"> <label>Codigo de seguranca</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="securityCode" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"> <label>Data de expiracao</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <input formControlName="expirationCard" type="text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--order details-->
+                
+                <div class="form-area">
+                    <h3>Revise o seu pedido</h3>
+
+                    <p>Quantidade de items: {{ totalQuantity }}</p>
+                    <p>Frete Gratis</p>
+                    <p>Preco Total: {{totalPrice | currency: 'BRL'}}</p>
+                </div>
+
+                <!--submit-->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-info">Comprar</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
 </div>
 
