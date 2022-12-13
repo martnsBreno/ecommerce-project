@@ -15,8 +15,10 @@ import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
+import com.githubmartnsbreno.ecommerce.entity.Country;
 import com.githubmartnsbreno.ecommerce.entity.Product;
 import com.githubmartnsbreno.ecommerce.entity.ProductCategory;
+import com.githubmartnsbreno.ecommerce.entity.State;
 
 @Configuration
 public class DataRestConfig implements RepositoryRestConfigurer {
@@ -27,24 +29,29 @@ public class DataRestConfig implements RepositoryRestConfigurer {
     public void MyDataRestConfig(EntityManager theEntityManager) {
         entityManager = theEntityManager;
     }
+
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
-        HttpMethod[] theUnsupporHttpMethods = {HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE};
+        
+        HttpMethod[] theUnsupportedHttpMethods = { HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE };
 
-        //DESABILITAR METODOS HTTP PUT POST E DELETE PARA PRODUTOS
-        config.getExposureConfiguration()
-        .forDomainType(Product.class)
-        .withItemExposure((Metadata, HttpMethods) -> HttpMethods.disable(theUnsupporHttpMethods))
-        .withCollectionExposure((Metadata, HttpMethods) -> HttpMethods.disable(theUnsupporHttpMethods));
+        disableHttp(Product.class, config, theUnsupportedHttpMethods);
 
-        //DESABILITAR METODOS HTTP PUT POST E DELETE PARA CATEGORIA DE PRODUTOS
-        config.getExposureConfiguration()
-        .forDomainType(ProductCategory.class)
-        .withItemExposure((Metadata, HttpMethods) -> HttpMethods.disable(theUnsupporHttpMethods))
-        .withCollectionExposure((Metadata, HttpMethods) -> HttpMethods.disable(theUnsupporHttpMethods));
-   
-        //chamando metodo interno
+        disableHttp(ProductCategory.class, config, theUnsupportedHttpMethods);
+
+        disableHttp(Country.class, config, theUnsupportedHttpMethods);
+
+        disableHttp(State.class, config, theUnsupportedHttpMethods);
+
+        // chamando metodo interno
         exposeIds(config);
+    }
+
+    private void disableHttp(Class theClass, RepositoryRestConfiguration config, HttpMethod[] theUnsupportedHttpMethods) {
+        config.getExposureConfiguration()
+                .forDomainType(theClass)
+                .withItemExposure((Metadata, HttpMethods) -> HttpMethods.disable(theUnsupportedHttpMethods))
+                .withCollectionExposure((Metadata, HttpMethods) -> HttpMethods.disable(theUnsupportedHttpMethods));
     }
 
     private void exposeIds(RepositoryRestConfiguration config) {
@@ -59,5 +66,5 @@ public class DataRestConfig implements RepositoryRestConfigurer {
         Class[] domainTypes = entityArray.toArray(new Class[0]);
         config.exposeIdsFor(domainTypes);
     }
-    
+
 }

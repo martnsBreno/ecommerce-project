@@ -10,7 +10,12 @@
                         <div class="col-md-2"> <label>Primeiro Nome</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <input formControlName="firstName" type="text">
+                                <input formControlName="firstName" type="text" class="mb-1">
+
+                                <div *ngIf="firstName?.errors && (firstName?.dirty || firstName?.touched)"
+                                    class="warning-button">
+                                    Por favor insira um nome válido
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -19,7 +24,12 @@
                         <div class="col-md-2"> <label>Ultimo Nome</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <input formControlName="lastName" type="text">
+                                <input formControlName="lastName" type="text" class="mb-1">
+
+                                <div *ngIf="lastName?.errors && (lastName?.dirty || lastName?.touched)"
+                                    class="warning-button">
+                                    Por favor insira um nome válido
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -28,7 +38,11 @@
                         <div class="col-md-2"> <label>Email</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <input formControlName="email" type="text">
+                                <input formControlName="email" type="text" class="mb-1">
+
+                                <div *ngIf="email?.errors && (email?.dirty || email?.touched)" class="warning-button">
+                                    Por favor insira um email válido
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -41,7 +55,12 @@
                         <div class="col-md-2"> <label>Rua</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <input formControlName="street" type="text">
+                                <input formControlName="street" type="text"  class="mb-1">
+
+
+                                <div *ngIf="street?.errors && (street?.dirty || street?.touched)" class="warning-button">
+                                    Por favor insira o nome da sua rua.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -50,18 +69,12 @@
                         <div class="col-md-2"> <label>Cidade</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <input formControlName="city" type="text">
-                            </div>
-                        </div>
-                    </div>
+                                <input formControlName="city" type="text"  class="mb-1">
 
-                    <div class="row">
-                        <div class="col-md-2"> <label>Estado</label></div>
-                        <div class="col-md-9">
-                            <div class="input-space">
-                                <select formControlName="state">
-                                    <option>A FAZER</option>
-                                </select>
+
+                                <div *ngIf="city?.errors && (city?.dirty || city?.touched)" class="warning-button">
+                                    Por favor insira o nome da sua cidade
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -70,9 +83,34 @@
                         <div class="col-md-2"> <label>Pais</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <select formControlName="country">
-                                    <option>A FAZER</option>
+                                <select formControlName="country" (change)="getStates('shippingAdress')"  class="mb-1">
+                                    <option *ngFor="let country of countries" [ngValue]="country">
+                                        {{ country.name }}
+                                    </option>
                                 </select>
+
+
+                                <div *ngIf="country?.errors && (country?.dirty || country?.touched)" class="warning-button">
+                                    Por favor selecione um país
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"> <label>Estado</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <select formControlName="state"  class="mb-1">
+                                    <option *ngFor="let state of shippingAdressStates">
+                                        {{ state.name }}
+                                    </option>
+
+
+                                </select>
+                                <div *ngIf="state?.errors && (state?.dirty || state?.touched)" class="warning-button">
+                                    Por favor selecione um estado
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -81,24 +119,33 @@
                         <div class="col-md-2"> <label>CEP</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <input formControlName="zipCode" type="text">
+                                <input formControlName="zipCode" type="text"  class="mb-1">
+
+
+                                <div *ngIf="zipCode?.errors && (zipCode?.dirty || zipCode?.touched)" class="warning-button">
+                                    Por favor informe o seu CEP
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!--credit card-->
-                
+
                 <div formGroupName="creditCard" class="form-area">
-                    <h3>Cliente</h3>
+                    <h3>Forma de Pagamento</h3>
                     <div class="row">
-                        <div class="col-md-2"> <label>Credito/Debito</label></div>
+                        <div class="col-md-2"> <label>Tipo</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <select formControlName="cardType">
+                                <select formControlName="cardType"  class="mb-1">
                                     <option>Credito</option>
                                     <option>Debito</option>
                                 </select>
+
+                                <div *ngIf="cardType?.errors && (cardType?.dirty || cardType?.touched)" class="warning-button">
+                                    Por favor informe o tipo de Pagamento
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -107,7 +154,11 @@
                         <div class="col-md-2"> <label>Nome no Cartao</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <input formControlName="nameOnCard" type="text">
+                                <input formControlName="nameOnCard" type="text"  class="mb-1">
+
+                                <div *ngIf="nameOnCard?.errors && (nameOnCard?.dirty || nameOnCard?.touched)" class="warning-button">
+                                    Por favor informe o nome 
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -116,32 +167,65 @@
                         <div class="col-md-2"> <label>Numero do Cartao</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <input formControlName="cardNumber" type="text">
+                                <input formControlName="cardNumber" type="text"  class="mb-1">
+
+                                <div *ngIf="cardNumber?.errors && (cardNumber?.dirty || cardNumber?.touched)" class="warning-button">
+                                    Por favor informe o numero do cartao
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-2"> <label>Codigo de seguranca</label></div>
+                        <div class="col-md-2"> <label>Código de seguranca</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <input formControlName="securityCode" type="text">
+                                <input formControlName="securityCode" type="text"  class="mb-1">
+
+                                <div *ngIf="securityCode?.errors && (securityCode?.dirty || securityCode?.touched)" class="warning-button">
+                                    O código de segurança deve ter 3 números
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-2"> <label>Data de expiracao</label></div>
+                        <div class="col-md-2"> <label>Ano de expiracao</label></div>
                         <div class="col-md-9">
                             <div class="input-space">
-                                <input formControlName="expirationCard" type="text">
+                                <select formControlName="expirationYear" (change)="handleMonthsAndYears()"  class="mb-1">
+                                    <option *ngFor="let year of creditCardYears">
+                                        {{ year }}
+                                    </option>
+                                </select>
+
+                                <div *ngIf="expirationYear?.errors && (expirationYear?.dirty || expirationYear?.touched)" class="warning-button">
+                                    Por favor informe o ano de expiracao
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-2"> <label>Mes de expiracao</label></div>
+                        <div class="col-md-9">
+                            <div class="input-space">
+                                <select formControlName="expirationMonth"  class="mb-1">
+                                    <option *ngFor="let month of creditCardMonths">
+                                        {{ month }}
+                                    </option>
+                                </select>
+
+                                <div *ngIf="expirationMonth?.errors && (expirationMonth?.dirty || expirationMonth?.touched)" class="warning-button">
+                                    Por favor informe o mes de expiracao
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 <!--order details-->
-                
+
                 <div class="form-area">
                     <h3>Revise o seu pedido</h3>
 
@@ -159,4 +243,3 @@
         </div>
     </div>
 </div>
-

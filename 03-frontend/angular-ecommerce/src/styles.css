@@ -1040,7 +1040,14 @@ footer ul li{
         padding:8px 0
     }
 
-    .toTriste:hover {
-        background: #0546a7;
-    }
+}
+
+.warning-button {
+    color: white;
+    padding: 5px;
+    background-color: rgb(247, 171, 171);
+    margin-top: 1;
+    border-radius: 3px;
+    max-width: 60%;
+    text-align: center;
 }
