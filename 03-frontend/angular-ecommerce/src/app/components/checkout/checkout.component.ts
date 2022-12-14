@@ -2,6 +2,7 @@ import { Component, destroyPlatform, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Country } from 'src/app/common/country';
 import { State } from 'src/app/common/state';
+import { CartService } from 'src/app/services/cart.service';
 import { FormServiceService } from 'src/app/services/form-service.service';
 import { Myvalidators } from 'src/app/validators/myvalidators';
 
@@ -25,9 +26,12 @@ export class CheckoutComponent implements OnInit {
   shippingAdressStates: State[] = [];
 
   constructor(private formBuilder: FormBuilder,
-    private formService: FormServiceService) { }
+    private formService: FormServiceService,
+    private cartService: CartService) { }
 
   ngOnInit(): void {
+
+    this.reviewCartDetails();
 
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
@@ -74,6 +78,19 @@ export class CheckoutComponent implements OnInit {
       data => {
         this.countries = data;
       });
+  }
+  reviewCartDetails() {
+    
+    // subscribe to cartService.totalQuantity
+    this.cartService.totalQuantity.subscribe(
+      totalQuantity => this.totalQuantity = totalQuantity
+    );
+
+    //subscribe to cartSerice.totalPrice
+    this.cartService.totalPrice.subscribe(
+      totalPrice => this.totalPrice = totalPrice
+    );
+
   }
 
   onSubmit() {
