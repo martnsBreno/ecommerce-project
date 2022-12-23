@@ -690,7 +690,7 @@ table.table.table-bordered{
     border:1px solid #dee2e6
 }
 table.table.table-bordered th{
-    BACKGROUND:#0da8e4;
+    background:#0da8e4;
     color:#fff;
     font-size:14px;
     padding:7px
@@ -997,6 +997,7 @@ footer ul li{
         border-radius:0;
         background:#205b8d
     }
+    
     input.au-input.au-input-xl{
         border-radius:0!important;
         margin-right:0
