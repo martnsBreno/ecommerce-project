@@ -8,6 +8,7 @@ import javax.persistence.metamodel.EntityType;
 
 import org.hibernate.boot.Metadata;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.core.mapping.HttpMethods;
@@ -20,8 +21,12 @@ import com.githubmartnsbreno.ecommerce.entity.Product;
 import com.githubmartnsbreno.ecommerce.entity.ProductCategory;
 import com.githubmartnsbreno.ecommerce.entity.State;
 
+
 @Configuration
 public class DataRestConfig implements RepositoryRestConfigurer {
+
+    @Value("${allowed.origins}")
+    private String[] theAllowedOrigins;
 
     private EntityManager entityManager;
 
@@ -33,7 +38,7 @@ public class DataRestConfig implements RepositoryRestConfigurer {
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         
-        HttpMethod[] theUnsupportedHttpMethods = { HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE };
+        HttpMethod[] theUnsupportedHttpMethods = { HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE, HttpMethod.PATCH };
 
         disableHttp(Product.class, config, theUnsupportedHttpMethods);
 
@@ -45,6 +50,8 @@ public class DataRestConfig implements RepositoryRestConfigurer {
 
         // chamando metodo interno
         exposeIds(config);
+
+        cors.addMapping(config.getBasePath() + "/**").allowedOrigins(theAllowedOrigins);
     }
 
     private void disableHttp(Class theClass, RepositoryRestConfiguration config, HttpMethod[] theUnsupportedHttpMethods) {
