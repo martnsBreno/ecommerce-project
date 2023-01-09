@@ -132,94 +132,17 @@
 
                 <!--credit card-->
 
+                <!--stripe elements for credit card-->
                 <div formGroupName="creditCard" class="form-area">
-                    <h3>Forma de Pagamento</h3>
-                    <div class="row">
-                        <div class="col-md-2"> <label>Tipo</label></div>
-                        <div class="col-md-9">
-                            <div class="input-space">
-                                <select formControlName="cardType"  class="mb-1">
-                                    <option>Credito</option>
-                                    <option>Debito</option>
-                                </select>
 
-                                <div *ngIf="cardType?.errors && (cardType?.dirty || cardType?.touched)" class="warning-button">
-                                    Por favor informe o tipo de Pagamento
-                                </div>
-                            </div>
-                        </div>
+                    <h3>Crédito ou Débito</h3>
+
+                    <div id="card-element">
+                        <!-- a stripe element will be inserted here -->
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-2"> <label>Nome no Cartao</label></div>
-                        <div class="col-md-9">
-                            <div class="input-space">
-                                <input formControlName="nameOnCard" type="text"  class="mb-1">
-
-                                <div *ngIf="nameOnCard?.errors && (nameOnCard?.dirty || nameOnCard?.touched)" class="warning-button">
-                                    Por favor informe o nome 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-2"> <label>Numero do Cartao</label></div>
-                        <div class="col-md-9">
-                            <div class="input-space">
-                                <input formControlName="cardNumber" type="text"  class="mb-1">
-
-                                <div *ngIf="cardNumber?.errors && (cardNumber?.dirty || cardNumber?.touched)" class="warning-button">
-                                    Por favor informe o numero do cartao
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-2"> <label>Código de seguranca</label></div>
-                        <div class="col-md-9">
-                            <div class="input-space">
-                                <input formControlName="securityCode" type="text"  class="mb-1">
-
-                                <div *ngIf="securityCode?.errors && (securityCode?.dirty || securityCode?.touched)" class="warning-button">
-                                    O código de segurança deve ter 3 números
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-2"> <label>Ano de expiracao</label></div>
-                        <div class="col-md-9">
-                            <div class="input-space">
-                                <select formControlName="expirationYear" (change)="handleMonthsAndYears()"  class="mb-1">
-                                    <option *ngFor="let year of creditCardYears">
-                                        {{ year }}
-                                    </option>
-                                </select>
-
-                                <div *ngIf="expirationYear?.errors && (expirationYear?.dirty || expirationYear?.touched)" class="warning-button">
-                                    Por favor informe o ano de expiracao
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-2"> <label>Mes de expiracao</label></div>
-                        <div class="col-md-9">
-                            <div class="input-space">
-                                <select formControlName="expirationMonth"  class="mb-1">
-                                    <option *ngFor="let month of creditCardMonths">
-                                        {{ month }}
-                                    </option>
-                                </select>
-
-                                <div *ngIf="expirationMonth?.errors && (expirationMonth?.dirty || expirationMonth?.touched)" class="warning-button">
-                                    Por favor informe o mes de expiracao
-                                </div>
-                            </div>
-                        </div>
+                    <div id="card-errors" class="displayError.textContent!=='': 'alert alert-danger mt-1' ">
+                        
                     </div>
 
                 </div>
