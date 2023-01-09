@@ -113,7 +113,32 @@ export class CheckoutComponent implements OnInit {
 
   }
 
+    //getters for customer
+
+    get firstName() { return this.checkoutFormGroup.get('customer.firstName'); }
+    get lastName() { return this.checkoutFormGroup.get('customer.lastName'); }
+    get email() { return this.checkoutFormGroup.get('customer.email'); }
+  
+    //getters for shipping adress
+  
+    get street() { return this.checkoutFormGroup.get('shippingAddress.street'); }
+    get city() { return this.checkoutFormGroup.get('shippingAddress.city'); }
+    get state() { return this.checkoutFormGroup.get('shippingAddress.state'); }
+    get country() { return this.checkoutFormGroup.get('shippingAddress.country'); }
+    get zipCode() { return this.checkoutFormGroup.get('shippingAddress.zipCode'); }
+  
+    //getters for credit card
+  
+    get cardType() { return this.checkoutFormGroup.get('creditCard.cardType'); }
+    get nameOnCard() { return this.checkoutFormGroup.get('creditCard.nameOnCard'); }
+    get cardNumber() { return this.checkoutFormGroup.get('creditCard.cardNumber'); }
+    get securityCode() { return this.checkoutFormGroup.get('creditCard.securityCode'); }
+    get expirationYear() { return this.checkoutFormGroup.get('creditCard.expirationYear'); }
+    get expirationMonth() { return this.checkoutFormGroup.get('creditCard.expirationMonth'); }
+
   onSubmit() {
+    console.log("Handling the submit button");
+
     if (this.checkoutFormGroup.invalid) {
       this.checkoutFormGroup.markAllAsTouched();
       return;
@@ -133,6 +158,9 @@ export class CheckoutComponent implements OnInit {
     //set up purchase
     let purchase = new Purchase();
 
+    //populate purchase - customer
+    purchase.customer = this.checkoutFormGroup.controls['customer'].value;
+
     //populate purchase - shipping address
     purchase.shippingAddress = this.checkoutFormGroup.controls['shippingAddress'].value;
     const shippingState: State = JSON.parse(JSON.stringify(purchase.shippingAddress.state));
@@ -140,8 +168,6 @@ export class CheckoutComponent implements OnInit {
     purchase.shippingAddress.state = shippingState.name;
     purchase.shippingAddress.country = shippingCountry.name;
 
-    //populate purchase - customer
-    purchase.customer = this.checkoutFormGroup.controls['customer'].value;
 
     //populate purchase - shipping address
     purchase.billingAddress = this.checkoutFormGroup.controls['shippingAddress'].value;
@@ -195,28 +221,28 @@ export class CheckoutComponent implements OnInit {
     this.router.navigateByUrl("/products");
   }
 
-  handleMonthsAndYears() {
+  // handleMonthsAndYears() {
 
-    const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
+  //   const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
 
-    const currentYear: number = new Date().getFullYear();
-    const selectedYear: number = Number(Number(creditCardFormGroup?.value.expirationYear));
+  //   const currentYear: number = new Date().getFullYear();
+  //   const selectedYear: number = Number(Number(creditCardFormGroup?.value.expirationYear));
 
-    let startMonth: number;
+  //   let startMonth: number;
 
-    if (currentYear == selectedYear) {
-      startMonth = new Date().getMonth() + 1;
-    } else {
-      startMonth = 1;
-    }
+  //   if (currentYear == selectedYear) {
+  //     startMonth = new Date().getMonth() + 1;
+  //   } else {
+  //     startMonth = 1;
+  //   }
 
-    this.formService.getCreditCardMonths(startMonth).subscribe(
-      data => {
-        console.log("retrieved credit card months: " + JSON.stringify(data))
-        this.creditCardMonths = data;
-      }
-    )
-  }
+  //   this.formService.getCreditCardMonths(startMonth).subscribe(
+  //     data => {
+  //       console.log("retrieved credit card months: " + JSON.stringify(data))
+  //       this.creditCardMonths = data;
+  //     }
+  //   )
+  // }
 
   getStates(formGroupName: string) {
 
@@ -231,26 +257,5 @@ export class CheckoutComponent implements OnInit {
     )
   }
 
-  //getters for customer
 
-  get firstName() { return this.checkoutFormGroup.get('customer.firstName'); }
-  get lastName() { return this.checkoutFormGroup.get('customer.lastName'); }
-  get email() { return this.checkoutFormGroup.get('customer.email'); }
-
-  //getters for shipping adress
-
-  get street() { return this.checkoutFormGroup.get('shippingAddress.street'); }
-  get city() { return this.checkoutFormGroup.get('shippingAddress.city'); }
-  get state() { return this.checkoutFormGroup.get('shippingAddress.state'); }
-  get country() { return this.checkoutFormGroup.get('shippingAddress.country'); }
-  get zipCode() { return this.checkoutFormGroup.get('shippingAddress.zipCode'); }
-
-  //getters for credit card
-
-  get cardType() { return this.checkoutFormGroup.get('creditCard.cardType'); }
-  get nameOnCard() { return this.checkoutFormGroup.get('creditCard.nameOnCard'); }
-  get cardNumber() { return this.checkoutFormGroup.get('creditCard.cardNumber'); }
-  get securityCode() { return this.checkoutFormGroup.get('creditCard.securityCode'); }
-  get expirationYear() { return this.checkoutFormGroup.get('creditCard.expirationYear'); }
-  get expirationMonth() { return this.checkoutFormGroup.get('creditCard.expirationMonth'); }
 }
