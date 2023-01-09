@@ -37,6 +37,8 @@ export class CheckoutComponent implements OnInit {
   cardElement: any;
   displayError: any = "";
 
+  isDisabled: boolean = false;
+
   paymentInfo: PaymentInfo = new PaymentInfo();
 
   constructor(private formBuilder: FormBuilder,
@@ -66,12 +68,6 @@ export class CheckoutComponent implements OnInit {
         zipCode: new FormControl('', [Validators.required, Validators.minLength(2), Myvalidators.notOnlyWhiteSpace])
       }),
       creditCard: this.formBuilder.group({
-        // cardType: new FormControl('', [Validators.required, Validators.minLength(2), Myvalidators.notOnlyWhiteSpace]),
-        // nameOnCard: new FormControl('', [Validators.required, Validators.minLength(2), Myvalidators.notOnlyWhiteSpace]),
-        // cardNumber: new FormControl('', [Validators.required, Validators.minLength(2), Myvalidators.notOnlyWhiteSpace]),
-        // securityCode: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(3), Myvalidators.notOnlyWhiteSpace]),
-        // expirationMonth: new FormControl('', [Validators.required]),
-        // expirationYear: new FormControl('', [Validators.required])
       }),
     });
 
@@ -178,27 +174,44 @@ export class CheckoutComponent implements OnInit {
     purchase.order = order;
     purchase.orderItems = orderItems;
 
-    this.paymentInfo.amount = this.totalPrice * 100;
+    this.paymentInfo.amount = Math.round(this.totalPrice * 100);
     this.paymentInfo.currency = "BRL";
+    this.paymentInfo.receiptEmail = purchase.customer.email;
+
+    console.log(`paymentInfo Amount: ${this.paymentInfo.amount}`);
 
     if (!this.checkoutFormGroup.invalid && this.displayError.textContent === "") {
+      this.isDisabled = true;
+
       this.checkoutService.createPaymentIntent(this.paymentInfo).subscribe(
         (paymentIntentResponse) => {
           this.stripe.confirmCardPayment(paymentIntentResponse.client_secret,
             {
               payment_method: {
-                card: this.cardElement
+                card: this.cardElement,
+                billing_details: {
+                  email: purchase.customer.email,
+                  name: `${purchase.customer.firstName} +  ${purchase.customer.lastName}`,
+                  address: {
+                    line1: purchase.billingAddress.street,
+                    city: purchase.billingAddress.city,
+                    state: purchase.billingAddress.state,
+                    postal_code: purchase.billingAddress.zipCode
+                  }
+                } 
               }
             }, { handleActions: false })
             .then((result: any) => {
               if (result.error) {
                 alert(`There was an erro: ${result.error.message}`);
+                this.isDisabled = false;
               } else {
                 this.checkoutService.placeOrder(purchase).subscribe({
                   next: (response: any) => {
                     alert(`Seu número de rastreio: ${response.orderTrackingNumber}`);
 
                     this.resetCard();
+                    this.isDisabled = false;
                   },
                   error: (err: any) => {
                     alert(`There was an error: ${err.message}`);
@@ -219,30 +232,9 @@ export class CheckoutComponent implements OnInit {
     this.checkoutFormGroup.reset();
 
     this.router.navigateByUrl("/products");
+
+    this.cartService.persistCartItems();
   }
-
-  // handleMonthsAndYears() {
-
-  //   const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
-
-  //   const currentYear: number = new Date().getFullYear();
-  //   const selectedYear: number = Number(Number(creditCardFormGroup?.value.expirationYear));
-
-  //   let startMonth: number;
-
-  //   if (currentYear == selectedYear) {
-  //     startMonth = new Date().getMonth() + 1;
-  //   } else {
-  //     startMonth = 1;
-  //   }
-
-  //   this.formService.getCreditCardMonths(startMonth).subscribe(
-  //     data => {
-  //       console.log("retrieved credit card months: " + JSON.stringify(data))
-  //       this.creditCardMonths = data;
-  //     }
-  //   )
-  // }
 
   getStates(formGroupName: string) {
 
